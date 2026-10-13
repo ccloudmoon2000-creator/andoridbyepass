@@ -1,0 +1,55 @@
+services:
+  android:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: aosp-android12-remote:local
+    restart: unless-stopped
+    init: true
+    shm_size: 2gb
+    devices:
+      - /dev/kvm:/dev/kvm
+    environment:
+      ANDROID_HOME: /opt/android-sdk
+      ANDROID_SDK_ROOT: /opt/android-sdk
+      AOSP_IMAGE_DIR: /opt/aosp-image
+      ANDROID_DATA_DIR: /data
+      ANDROID_AVD_HOME: /data/avd
+      ANDROID_SERIAL: emulator-5554
+      EMULATOR_MEMORY_MB: ${EMULATOR_MEMORY_MB:-4096}
+      EMULATOR_CORES: ${EMULATOR_CORES:-4}
+    volumes:
+      - ./aosp-image:/opt/aosp-image:ro
+      - android-data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)"]
+      interval: 20s
+      timeout: 4s
+      retries: 3
+      start_period: 60s
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    image: aosp-android12-gateway:local
+    restart: unless-stopped
+    depends_on:
+      android:
+        condition: service_started
+    environment:
+      BASIC_AUTH_USER: ${BASIC_AUTH_USER:?Copy .env.example to .env and set credentials}
+      BASIC_AUTH_PASSWORD: ${BASIC_AUTH_PASSWORD:?Copy .env.example to .env and set credentials}
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  android-data:

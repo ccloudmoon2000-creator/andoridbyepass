@@ -1,0 +1,20 @@
+IMPLEMENTATION STATUS
+
+Implemented in source:
+- Static browser control panel; no imitation of Android applications.
+- FastAPI endpoints for emulator lifecycle, status, key events, tap and swipe.
+- Android SDK/Emulator container build definition.
+- Xvfb/Openbox/x11vnc/noVNC WebSocket streaming setup.
+- Nginx Basic Auth gateway with public port bound to loopback.
+- Docker Compose private network and persistent Android data volume.
+- AOSP source-build script pinned to official android-platform-12.0.0_r40 manifest tag.
+- Deployment and HTTPS publication instructions.
+
+Not verified / not performed in this environment:
+- AOSP source sync or compilation.
+- Emulator launch or completed Android 12 boot.
+- Version confirmation in Android Settings.
+- Real input/stream end-to-end tests.
+- Public hosting/domain deployment.
+
+Reason: no /dev/kvm device or Docker runtime is available here, and there is no compiled AOSP system image. The `aosp-image/` directory is intentionally empty until the included build script is run on a suitable Linux host. Do not treat acceptance criteria 1-5 as passed until those tests are executed on the target server.

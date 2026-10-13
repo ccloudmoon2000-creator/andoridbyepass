@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="dark light">
+  <title>AOSP Android 12 — acesso remoto</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">A</div>
+    <div class="heading">
+      <h1>AOSP Android 12</h1>
+      <p>Consola de acesso remoto · o ecrã abaixo provém do emulador</p>
+    </div>
+    <div class="status-pill" id="status-pill" data-state="checking"><span class="led"></span><span id="status-label">A verificar</span></div>
+  </header>
+
+  <main>
+    <section class="controls-panel" aria-label="Controlos do emulador">
+      <div class="status-copy">
+        <div class="eyebrow">ESTADO DO SISTEMA</div>
+        <div id="summary" class="summary">A contactar o serviço remoto…</div>
+        <div id="version" class="muted">Versão Android ainda não confirmada.</div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="start-btn" type="button">Iniciar</button>
+        <button id="reboot-btn" type="button">Reiniciar Android</button>
+        <button id="restart-btn" type="button">Reiniciar emulador</button>
+        <button id="stop-btn" type="button">Parar</button>
+      </div>
+      <div class="nav-actions" aria-label="Comandos rápidos do Android">
+        <button data-key="HOME" type="button" title="Home">⌂ <span>Home</span></button>
+        <button data-key="BACK" type="button" title="Voltar">← <span>Voltar</span></button>
+        <button data-key="APP_SWITCH" type="button" title="Aplicações recentes">▢ <span>Recentes</span></button>
+        <button data-key="NOTIFICATIONS" type="button" title="Notificações">▤ <span>Notificações</span></button>
+        <button data-key="POWER" type="button" title="Botão de alimentação">⏻ <span>Energia</span></button>
+      </div>
+      <div id="notice" class="notice" role="status" aria-live="polite">A preparar o estado do emulador…</div>
+    </section>
+
+    <section class="screen-panel" aria-label="Ecrã em tempo real do Android">
+      <div class="screen-heading">
+        <div><strong>Ecrã remoto</strong><span class="muted"> · vídeo, rato/toque e teclado via noVNC</span></div>
+        <a href="/vnc.html?autoconnect=true&resize=scale&reconnect=true&path=websockify" target="_blank" rel="noopener noreferrer">Abrir ecrã numa janela separada ↗</a>
+      </div>
+      <div class="screen-frame">
+        <iframe id="remote-screen" title="Ecrã do Android Emulator executado no servidor" src="/vnc.html?autoconnect=true&resize=scale&reconnect=true&path=websockify" allow="clipboard-read; clipboard-write" referrerpolicy="no-referrer"></iframe>
+        <div class="empty-overlay" id="empty-overlay">
+          <div class="spinner" aria-hidden="true"></div>
+          <strong>À espera do ecrã remoto</strong>
+          <p>O ecrã real será apresentado quando o serviço VNC estiver ligado. Não é uma réplica gráfica.</p>
+        </div>
+      </div>
+      <p class="footnote">Clique dentro do ecrã para interagir. O teclado e o rato são encaminhados para a janela real do Android Emulator. Os controlos rápidos usam eventos ADB.</p>
+    </section>
+
+    <details class="diagnostics">
+      <summary>Diagnóstico técnico</summary>
+      <pre id="diagnostics">A obter o estado…</pre>
+    </details>
+  </main>
+  <footer>
+    <span>AOSP Android 12 · execução no servidor</span>
+    <span>O estado “arrancado” só é confirmado após resposta do dispositivo Android.</span>
+  </footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>
